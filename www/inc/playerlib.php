@@ -1008,6 +1008,7 @@ function parseTrackInfo($resp) {
 	10 Date
 	11 Duration
 	12 Audio format
+	13 Content
 	*/
 
 	if (is_null($resp)) {
@@ -1016,7 +1017,7 @@ function parseTrackInfo($resp) {
 	else {
 		$array = array();
 		$line = strtok($resp, "\n");
-		$num_lines = 13;
+		$num_lines = 14;
 
 		for ($i = 0; $i < $num_lines; $i++) {
 			$array[$i] = '';
@@ -1068,6 +1069,10 @@ function parseTrackInfo($resp) {
 					break;
 				case 'Time':
 					$array[11] = array('Duration' => songTime($value));
+					break;
+				case 'Content':
+					$array[13] = array($element => $value);
+					$array[13] = preg_replace("/\r\n|\r|\n/", '<br/>', $array[13]);
 					break;
 			}
 
