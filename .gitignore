@@ -16,3 +16,6 @@ __MACOSX
 /node_modules
 /www/index.html
 /logs
+/.vs
+package-lock.json
+*.json

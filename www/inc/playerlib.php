@@ -227,7 +227,7 @@ function integrityCheck() {
 	// Export device table
 	sysCmd('sqlite3 ' . SQLDB_PATH . " \"SELECT * FROM cfg_audiodev WHERE drvoptions NOT IN ('slave', 'glb_mclk') AND chipoptions = ''\" > /tmp/cfg_audiodev.sql");
 	// Broom www root
-	sysCmd('find /var/www -type l -delete');
+	//sysCmd('find /var/www -type l -delete');
 
 	// Check database schema
 	$result = sysCmd('sqlite3 /var/local/www/db/moode-sqlite3.db .schema | grep ro_columns');
@@ -1008,7 +1008,7 @@ function parseTrackInfo($resp) {
 	10 Date
 	11 Duration
 	12 Audio format
-	13 Content
+	13 Comment
 	*/
 
 	if (is_null($resp)) {
@@ -1070,7 +1070,7 @@ function parseTrackInfo($resp) {
 				case 'Time':
 					$array[11] = array('Duration' => songTime($value));
 					break;
-				case 'Content':
+				case 'Comment':
 					$array[13] = array($element => $value);
 					$array[13] = preg_replace("/\r\n|\r|\n/", '<br/>', $array[13]);
 					break;
