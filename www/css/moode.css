@@ -564,71 +564,114 @@ ol.playhistory {margin-left:55px;}
 #ph-search input {width:145px;margin:0;padding: 2px 0 2px 10px;border-top-right-radius:0px;border-bottom-right-radius:0px;}
 
 /* Multiple albumart images */
-@media (max-width:780px) {
-	#albumthumbs {display: none;}
-}
-#slider{opacity:1;transition:opacity 0.2s;}
-#slider.fadeOut{opacity:0;}
-img.coverart{opacity:1;transition:opacity 0.2s;}
-img.coverart.fadeOut{opacity:0;}
-.dot, .cover_art_dot, .coverview_art_dot{
-cursor: pointer;
-height: 9px;
-width: 9px;
-margin: 4px 5px 0px 0px;
-background-color: #777;
-border-radius: 50%;
-display: inline-block;
-transition: background-color 0.2s ease;
-}
-.dotactive {
-background-color: #ccc;
-}
-.dot:hover, .cover_art_dot:hover, .coverview_art_dot:hover {
-background-color: #ddd;
-}
-#expandcover, #expandcoverview {
-	margin-left: 20px;
-	margin-top: -3px;
-	height:11px;
-	/*vertical-align: baseline;*/
-	cursor: pointer;
-}
-#albumthumbs img {
-	cursor: pointer;
-	padding-bottom: 5px;
-	padding-right: 5px;
-}
-#albumart-modal {
-	min-width: 90vw;
-}
+#slider {
+        opacity: 1;
+        transition: opacity 0.2s,width 0.3s ease-in-out;
+    }
+    #slider.fadeOut{opacity:0;}
+    img.coverart {
+        opacity: 1;
+        transition: opacity 0.2s,width 0.2s ease-in-out;
+    }
+    img.coverart.fadeOut{opacity:0;}
+    .dot, .cover_art_dot, .coverview_art_dot{
+    cursor: pointer;
+    height: 5px;
+    width: 5px;
+    margin: 4px 5px 0px 0px;
+    background-color: #777;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.2s ease;
+    }
+    .dotactive {
+    background-color: #ccc;
+    }
+    .dot:hover, .cover_art_dot:hover, .coverview_art_dot:hover {
+    background-color: #ddd;
+    }
+    img.coverart-resized {
+        height: 90%;
+        width: 90%;
+    }
+    @media (max-width:1400px) {
+        img.coverart-resized {
+            height: 80%;
+            width: 80%;
+        }
+    }
+    @media (max-width:1000px) {
+        img.coverart-resized {
+            height: 70%;
+            width: 70%;
+        }
+    }
+    @media (max-width:780px) {
+        img.coverart-resized {
+            height: 60%;
+            width: 60%;
+        }
+    }
+    @media (max-width:480px) {
+        img.coverart-resized {
+            height: 40%;
+            width: 40%;
+        }
+    }
+    #expandcover, #expandcoverview {
+        margin-left: 20px;
+        margin-top: -3px;
+        height: 11px;
+        /*vertical-align: baseline;*/
+        cursor: pointer;
+    }
 
-/* Use custom scroll bars for desktop monitors */
-@media (pointer: fine) {
-	.custom-scrollbars ::-webkit-scrollbar {
-		width: 11px;
-   }
+    #albumthumbs {
+        position: absolute;
+        right: 15px;
+        transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out;
+        opacity: 0;
+        width: 0px;
+        overflow: hidden;
+    }
 
-   .custom-scrollbars ::-webkit-scrollbar-track:hover {
-	    -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
-		border-radius: 6px;
-   }
+    #albumthumbs img {
+        width: 30px;
+        cursor: pointer;
+        padding-bottom: 5px;
+        padding-right: 5px;
+    }
 
-   .custom-scrollbars ::-webkit-scrollbar-thumb {
-		border-radius: 6px;
-		background-color: var(--btnshade2);
-		border:2px solid rgba(0,0,0,0);
-		background-clip: padding-box;
-		min-height:1.5em;
-   }
+    #albumart-modal {
+        min-width: 90vw;
+    }
 
-   .custom-scrollbars ::-webkit-scrollbar-thumb:active {
-	   background-color:var(--textvariant);
-   }
+    /* Use custom scroll bars for desktop monitors */
+    @media (pointer: fine) {
+        .custom-scrollbars ::-webkit-scrollbar {
+            width: 11px;
+        }
 
-   /* Firefox */
-   .custom-scrollbars * {
-	   scrollbar-width: thin;
-	   scrollbar-color: auto;
-   }
-}
+        .custom-scrollbars ::-webkit-scrollbar-track:hover {
+            -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
+            border-radius: 6px;
+        }
+
+        .custom-scrollbars ::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background-color: var(--btnshade2);
+            border: 2px solid rgba(0,0,0,0);
+            background-clip: padding-box;
+            min-height: 1.5em;
+        }
+
+            .custom-scrollbars ::-webkit-scrollbar-thumb:active {
+                background-color: var(--textvariant);
+            }
+
+        /* Firefox */
+        .custom-scrollbars * {
+            scrollbar-width: thin;
+            scrollbar-color: auto;
+        }
+    }
