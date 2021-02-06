@@ -3802,27 +3802,6 @@ function trackinfo_albumart(path) {
     xhttp.send();
 }
 
-//function trackinfo_albumart_folderImg(path) {
-//    var xhttp;
-//    var embdImgArray;
-//    xhttp = new XMLHttpRequest();
-//    xhttp.onreadystatechange = function () {
-//        if (this.readyState === 4 && this.status === 200) {
-//            if (this.responseText && this.responseText != "") {
-//                embdImgArray = JSON.parse(this.responseText);
-//                if (Array.isArray(embdImgArray)) {
-//                    embdImgArray.forEach(function (item) {
-//                        tInfoImgArray.push(item);
-//                    });
-//                }
-//            }
-//            trackinfo_albumart_disp(tInfoImgArray);
-//       }
-//    };
-//    xhttp.open("GET", "albumart.php?filepath=" + encodeURI(path), true);
-//    xhttp.send();
-//}
-
 function trackinfo_albumart_disp(tInfoImgArray) {
     if (Array.isArray(tInfoImgArray) && tInfoImgArray.length > 0) {
         slideImgArray = tInfoImgArray;
