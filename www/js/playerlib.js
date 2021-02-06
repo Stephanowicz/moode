@@ -754,6 +754,7 @@ function renderUI() {
     		else {
     			setColors();
     		}
+        	multiAlbumArt();
     	}
 
     	// Extra metadata displayed under the cover
@@ -3749,6 +3750,9 @@ function audioInfo(cmd, path, dialog){
         GLOBAL.scriptSection == 'configs' ? $('#audioinfo-tabs').css('display', 'none') : $('#audioinfo-tabs').css('display', 'flex');
 	    $.post('command/moode.php?cmd=' + cmd, {'path': path}, function(result) {
 			itemInfoModal('trackdata', result, path);
+		        if (cmd == 'track_info') {
+		        	trackinfo_albumart(path);
+		        }
 			if (dialog != 'hardware') dialog = 'track';
 			cmd == 'station_info' ? $('#audioinfo-track').text('Station') : $('#audioinfo-track').text('Track');
 			$('#audioinfo-modal').removeClass('track hardware');
@@ -3778,4 +3782,162 @@ function itemInfoModal(id, result) {
     }
 
     document.getElementById(id).innerHTML = lines;
+}
+
+//**********      multiple albumart images      ********************************
+//   Albumart for track info - actual song or selected song
+function trackinfo_albumart(path) {
+    var xhttp;
+    tInfoImgArray = new Array();
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if (this.responseText && this.responseText != "") {
+                tInfoImgArray = JSON.parse(this.responseText);
+            }
+            trackinfo_albumart_disp(tInfoImgArray);
+        }
+    };
+    xhttp.open("GET", "albumart.php?filepath=" + encodeURI(path), true);
+    xhttp.send();
+}
+
+//function trackinfo_albumart_folderImg(path) {
+//    var xhttp;
+//    var embdImgArray;
+//    xhttp = new XMLHttpRequest();
+//    xhttp.onreadystatechange = function () {
+//        if (this.readyState === 4 && this.status === 200) {
+//            if (this.responseText && this.responseText != "") {
+//                embdImgArray = JSON.parse(this.responseText);
+//                if (Array.isArray(embdImgArray)) {
+//                    embdImgArray.forEach(function (item) {
+//                        tInfoImgArray.push(item);
+//                    });
+//                }
+//            }
+//            trackinfo_albumart_disp(tInfoImgArray);
+//       }
+//    };
+//    xhttp.open("GET", "albumart.php?filepath=" + encodeURI(path), true);
+//    xhttp.send();
+//}
+
+function trackinfo_albumart_disp(tInfoImgArray) {
+    if (Array.isArray(tInfoImgArray) && tInfoImgArray.length > 0) {
+        slideImgArray = tInfoImgArray;
+        var iIndex = 0;
+        var lines = '<li><span class="left">Albumart</span><span class="ralign"></li>';
+        $('#trackinfo-albumart-modal').load('./templates/trackinfoAlbumart.html', function () {
+            tInfoImgArray.forEach(function (item) {
+                document.getElementById('trackinfo_dots').innerHTML += '<span class="trackinfo_dot" onclick="trackinfo_nextSlideImage(' + iIndex + ')"></span>';
+                lines += '<li><span class="left">' + item[2] + '<br />' + item[1] + '</span><span class="ralign"><img onClick="trackinfo_albumart_click(' + iIndex + ')" id="trackinfo_thumb" style="width:80px" src="' + item[0] + '"< /></span></li>';
+                iIndex++;
+            });
+            document.getElementById('trackdata').innerHTML += lines;
+        });
+    }
+}
+
+function trackinfo_albumart_click(iIndex) {
+    trackinfo_resetActiveSlideDots();
+    $('#trackinfo_slider').attr('src', slideImgArray[iIndex][0]);
+    trackinfo_curSlideIndex = iIndex + 1;
+    document.getElementsByClassName("trackinfo_dot")[iIndex].className += " dotactive";
+    $('#trackinfo-albumart-modal').modal();
+}
+
+//  Albumart for actual song - display in playerview and coverview
+function multiAlbumArt() {
+    $('#albumthumbs_inidcator').css('display', 'none');
+    $('#coverview_albumthumbs_inidcator').css('display', 'none');
+    $('#coverview_albumthumbs').empty();
+    $('#coverview_albumthumbs').css({ "opacity": "0", "height": "0px" });
+    $('#albumthumbs').empty();
+    $('#albumthumbs').css({ "opacity": "0", "height": "0px" });
+    $('#ss-coverart').unbind("mouseenter mouseleave");
+    $('#albumthumb').unbind("mouseenter mouseleave");
+    //  $('#cover_art_dots').empty();
+    //  $('#coverview_art_dots').empty();
+    $('#coverart-url').css('display', '');
+    if (MPD.json['file'] && MPD.json['file'].length > 4) { //&& MPD.json['file'].slice(-4) == 'flac') {
+        var xhttp;
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                if (this.responseText && this.responseText != "") {
+                    imgArray = JSON.parse(this.responseText);
+                    if (Array.isArray(imgArray) && imgArray.length > 1) {
+                        var iIndex = 0;
+                        $('#albumart-modal').load('./templates/albumart.html', function () {
+                            imgArray.forEach(function (item) {
+                                document.getElementById('albumthumbs').innerHTML += '<img id="thumb' + iIndex + '" src="' + item[0] + '"</img>';
+                                document.getElementById('coverview_albumthumbs').innerHTML += '<img id="coverthumb' + iIndex + '" src="' + item[0] + '"</img>';
+                                //                  document.getElementById('cover_art_dots').innerHTML +=  '<span class="cover_art_dot" onclick="nextCoverImage('+iIndex+')"></span>';
+                                //    document.getElementById('coverview_art_dots').innerHTML +=  '<span class="coverview_art_dot" onclick="(function(){event.stopPropagation();event.preventDefault();nextCoverViewImage('+iIndex+'); return false;})();return false;"></span>';
+                                document.getElementById('dots').innerHTML += '<span class="dot" onclick="nextSlideImage(' + iIndex + ')"></span>';
+                                iIndex++;
+                            });
+                            $('#coverart-url').css('display', 'contents');
+                            $('#albumthumbs_inidcator').css('display', 'block');
+                            $('#albumthumbs_inidcator').on("click", albumthumbs_inidcator_click);
+                            $('#coverview_albumthumbs_inidcator').css('display', 'block');
+                            $('#coverview_albumthumbs_inidcator').on("click", coverview_albumthumbs_inidcator_click);
+                            $('#albumthumbs').click(function (event) { i = event.target.id.slice(-1); nextCoverImage(i); });
+                            $('#albumthumbs').dblclick(function (event) { resetActiveSlideDots(); i = event.target.id.slice(-1); $('#slider').attr('src', imgArray[i][0]); $('#albumart-modal').modal(); curSlideIndex = (parseInt(i) + 1); document.getElementsByClassName("dot")[i].className += " dotactive"; });
+                            $('#coverview_albumthumbs').click(function (event) { event.stopPropagation(); event.preventDefault(); i = event.target.id.slice(-1); nextCoverViewImage(i); });
+                            $('#coverview_albumthumbs').dblclick(function (event) { event.stopPropagation(); event.preventDefault(); resetActiveSlideDots(); i = event.target.id.slice(-1); $('#slider').attr('src', imgArray[i][0]); $('#albumart-modal').modal(); curSlideIndex = (parseInt(i) + 1); document.getElementsByClassName("dot")[i].className += " dotactive"; });
+                            //               $('.covers').on("mouseenter", function () { $('#albumthumbs').css({ "opacity": "1", "height": "40px" }); $('.coverart').addClass("coverart-resized"); });
+                            //                $('#albumthumbs').on("mouseleave", function () { $('#albumthumbs').css({ "opacity": "0", "height": "0px" }); $('.coverart').removeClass("coverart-resized"); $('#albumthumbs_inidcator').css('display', 'block'); });
+                            //                $('#ss-coverart').on("mouseenter", function () { $('#coverview_albumthumbs').css({ "opacity": "1", "height": "40px" }); $('#ss-coverart-url img').css('width','70vh'); });
+                            //                $('#ss-coverart').on("mouseleave", function () { $('#coverview_albumthumbs').css({ "opacity": "0", "height": "0px" }); $('#ss-coverart-url img').css('width', '75vh'); });
+                            //                $('.covers, #playback-switch').on("mouseenter", function () { $('#albumthumbs').css('display', ''); $('.coverart').addClass("coverart-resized"); });
+                            //                $('.covers, #playback-switch').on("mouseleave", function () { $('#albumthumbs').css('display', 'none'); $('.coverart').removeClass("coverart-resized"); });
+                            //$('.covers, #playback-switch').on("mouseenter", function () { $('#albumthumbs').css('display', ''); $('#coverart-url').children()[0].setAttribute("style", "height:80%;width:80%;"); });
+                            //$('.covers, #playback-switch').on("mouseleave", function () { $('#albumthumbs').css('display', 'none'); $('#coverart-url').children()[0].setAttribute("style", "height:100%;width:100%;"); });
+                            //     $('#albumthumbs').click(function (event) { resetActiveSlideDots(); i = event.target.id.slice(-1); $('#slider').attr('src', imgArray[i]); $('#albumart-modal').modal(); curSlideIndex = (parseInt(i) + 1); document.getElementsByClassName("dot")[i].className += " dotactive"; });
+                            //    document.getElementById('cover_art_dots').innerHTML += '<img id="expandcover" src="/images/expand.svg"/>';
+                            //    document.getElementById('coverview_art_dots').innerHTML += '<img id="expandcoverview" src="/images/expand.svg"/>';
+                            //    $('#expandcover').click(function(event) {resetActiveSlideDots();$('#slider').attr('src',imgArray[curCoverIndex == 0?0:curCoverIndex-1]); $('#albumart-modal').modal();curSlideIndex= curCoverIndex == 0?1:curCoverIndex;document.getElementsByClassName("dot")[curCoverIndex == 0?0:curCoverIndex-1].className += " dotactive"; });
+                            //    $('#expandcoverview').click(function(event) {event.stopPropagation();event.preventDefault();resetActiveSlideDots();$('#slider').attr('src',imgArray[curCoverViewIndex == 0?0:curCoverViewIndex-1]); $('#albumart-modal').modal();curSlideIndex= curCoverViewIndex == 0?1:curCoverViewIndex;document.getElementsByClassName("dot")[curCoverViewIndex == 0?0:curCoverViewIndex-1].className += " dotactive"; });
+                            //    document.getElementsByClassName("cover_art_dot")[0].className += " dotactive";
+                            //   document.getElementsByClassName("coverview_art_dot")[0].className += " dotactive";
+                        });
+                    }
+                }
+            }
+        };
+        xhttp.open("GET", "albumart.php", true);
+        xhttp.send();
+    }
+
+    function albumthumbs_inidcator_click() {
+        if (document.getElementById('albumthumbs').clientHeight == 0) {
+            $('#albumthumbs').css({ "opacity": "1", "height": "40px" });
+            $('#albumthumbs img').css({ "height": "40px" });
+            $('.coverart').addClass("coverart-resized");
+            $('#albumthumbs_inidcator').css('height', '7px');
+        }
+        else {
+            $('#albumthumbs').css({ "opacity": "0", "height": "0px" });
+            $('#albumthumbs img').css({ "height": "0px" });
+            $('.coverart').removeClass("coverart-resized");
+            $('#albumthumbs_inidcator').css('height', '2px');
+        }
+    }
+    function coverview_albumthumbs_inidcator_click() {
+        event.stopPropagation(); event.preventDefault();
+        if (document.getElementById('coverview_albumthumbs').clientHeight == 0) {
+            $('#coverview_albumthumbs').css({ "opacity": "1", "height": "40px" });
+            $('#coverview_albumthumbs img').css({ "height": "40px" });
+            $('#ss - coverart - url img').css('width', '70vh');
+            $('#coverview_albumthumbs_inidcator').css('height', '7px');
+        }
+        else {
+            $('#coverview_albumthumbs').css({ "opacity": "0", "height": "0px" });
+            $('#coverview_albumthumbs img').css({ "height": "0px" });
+            $('#ss-coverart-url img').css('width', '75vh');
+            $('#coverview_albumthumbs_inidcator').css('height', '0px');
+        }
+    }
 }

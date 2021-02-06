@@ -170,6 +170,10 @@
 	<span class="reconnect-msg">System shut down</span>
 </div>
 
+<!-- AlbumArt -->
+<div id="albumart-modal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="trackinfo_albumart-modal-label" aria-hidden="true"></div>
+<div id="trackinfo-albumart-modal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="trackinfo-albumart-modal-label" aria-hidden="true"></div>
+
 <?php
     //workerLog('-- footer.php');
     $return_val = session_write_close();
