@@ -641,23 +641,6 @@ img.coverart-resized {
 	}
 }
 
-#expandcover, #expandcoverview {
-	margin-left: 20px;
-	margin-top: -3px;
-	height: 11px;
-	/*vertical-align: baseline;*/
-	cursor: pointer;
-}
-
-/*#albumthumbs {
-    position: absolute;
-    float:right;    
-    right: 15px;
-    transition: opacity 0.3s ease-in-out, width 0.2s ease-in-out;
-    opacity: 0;
-    width: 0px;
-    overflow: hidden;
-}*/
 #albumthumbs_inidcator, #coverview_albumthumbs_inidcator {
 	height: 0px;
 	display: none;
@@ -688,7 +671,10 @@ img.coverart-resized {
 
 #albumart-modal, #trackinfo-albumart-modal {
 	min-width: 90vw;
-}/* Use custom scroll bars for desktop monitors */
+}
+/***********************************************************/
+
+/* Use custom scroll bars for desktop monitors */
 @media (pointer: fine) {
 	.custom-scrollbars ::-webkit-scrollbar {
 		width: 11px;
