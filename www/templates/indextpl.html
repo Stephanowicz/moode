@@ -29,15 +29,16 @@
 	<div id="screen-saver" class="hide" href="#notarget">
 		<div id="ss-backdrop"></div>
 		<div id="ss-style"></div>
-		<div id="ss-coverart" class="ss-coverart">
-			<div id="ss-coverart-url"></div>
-			<div id="coverview_art_dots" style="text-align:center;height:2px"></div>
-			<div id="ss-currentsong"></div>
-			<div id="ss-currentalbum-div">
-				<span id="ss-currentalbum"></span>
-				<span id="ss-hd-badge"></span>
-			</div>
-		</div>
+       <div id="ss-coverart" class="ss-coverart">
+            <div id="ss-coverart-url"></div>
+            <div id="coverview_albumthumbs_inidcator"><i class="far fa-ellipsis-h"></i></div>
+            <div id="coverview_albumthumbs" style="text-align:center;"></div>
+            <div id="ss-currentsong"></div>
+            <div id="ss-currentalbum-div">
+                <span id="ss-currentalbum"></span>
+                <span id="ss-hd-badge"></span>
+            </div>
+        </div>
 	</div>
 
 	<!-- PLAYBACK WITH INTEGRATED QUEUE -->
@@ -113,36 +114,37 @@
 
 				<!-- Cover art and song metadata -->
 				<div id="playback-cover" class="span4">
-					<div class="covers">
-						<div id="playback-firstuse-help"><div></div></div>
-						<div id="albumthumbs" style="float:right;"></div>
-						<div aria-label="Cover Art" id="coverart-url"></div>
-						<div id="cover_art_dots" style="text-align:center"></div>
-						<div id="timeline">
-							<div class="timeline-bg"></div>
-							<div class="timeline-progress"></div>
-							<div class="timeline-thm">
-								<input aria-label="Time" id="timetrack" type="range" min="0" max="1000" value="0" step="1">
-							</div>
-							<div id="mobile-time">
-								<div aria-label="Countdown" id="m-countdown"></div>
-								<div aria-label="Total" id="m-total"></div>
-							</div>
-						</div>
+                    <div class="covers">
+                        <div id="playback-firstuse-help"><div></div></div>
+													   
+                        <div aria-label="Cover Art" id="coverart-url"></div>
+                        <div id="albumthumbs_inidcator"><i class="far fa-ellipsis-h"></i></div>                        
+                        <div id="albumthumbs"></div>
+                        <div id="timeline">
+                            <div class="timeline-bg"></div>
+                            <div class="timeline-progress"></div>
+                            <div class="timeline-thm">
+                                <input aria-label="Time" id="timetrack" type="range" min="0" max="1000" value="0" step="1">
+                            </div>
+                            <div id="mobile-time">
+                                <div aria-label="Countdown" id="m-countdown"></div>
+                                <div aria-label="Total" id="m-total"></div>
+                            </div>
+                        </div>
 
-						<div id="songsand">
-							<div id="extra-tags-display"></div>
-							<div id="currentalbum-div">
-								<span id="currentalbum"></span>
-								<span class="playback-hd-badge"></span>
-							</div>
-							<span id="currentsong"></span>
-							<div id="currentartist-div">
-								<span id="currentartist"></span>
-								<span class="playback-hd-badge"></span>
-							</div>
-						</div>
-					</div>
+                        <div id="songsand">
+                            <div id="extra-tags-display"></div>
+                            <div id="currentalbum-div">
+                                <span id="currentalbum"></span>
+                                <span class="playback-hd-badge"></span>
+                            </div>
+                            <span id="currentsong"></span>
+                            <div id="currentartist-div">
+                                <span id="currentartist"></span>
+                                <span class="playback-hd-badge"></span>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -401,22 +403,24 @@
 <!-- CONTEXT MENUS -->
 <div id="context-menus">
 	<div id="context-menu-folder" class="context-menu">
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="#notarget" data-cmd="add_item"><i class="fal fa-plus sx"></i> Add</a></li>
-			<li><a href="#notarget" data-cmd="play_item"><i class="fal fa-play sx"></i> Play</a></li>
-			<li><a href="#notarget" data-cmd="clear_add_item"><i class="fal fa-plus-square sx"></i> Clear/Add</a></li>
-			<li><a href="#notarget" data-cmd="clear_play_item"><i class="fal fa-chevron-square-right sx"></i> Clear/Play</a></li>
-			<li><a href="#notarget" data-cmd="update_folder"><i class="fal fa-sync sx"></i> Update this folder</a></li>
-		</ul>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#notarget" data-cmd="add_item"><i class="fal fa-plus sx"></i> Add</a></li>
+            <li><a href="#notarget" data-cmd="play_item"><i class="fal fa-play sx"></i> Play</a></li>
+            <li><a href="#notarget" data-cmd="add_folders_next"><i class="fal fa-plus-circle sx"></i> Add next</a></li>
+            <li><a href="#notarget" data-cmd="clear_add_item"><i class="fal fa-plus-square sx"></i> Clear/Add</a></li>
+            <li><a href="#notarget" data-cmd="clear_play_item"><i class="fal fa-chevron-square-right sx"></i> Clear/Play</a></li>
+            <li><a href="#notarget" data-cmd="update_folder"><i class="fal fa-sync sx"></i> Update this folder</a></li>
+        </ul>
 	</div>
 
 	<div id="context-menu-folder-item" class="context-menu">
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="#notarget" data-cmd="add_item"><i class="fal fa-plus sx"></i> Add</a></li>
-			<li><a href="#notarget" data-cmd="play_item"><i class="fal fa-play sx"></i> Play</a></li>
-			<li><a href="#notarget" data-cmd="clear_play_item"><i class="fal fa-chevron-square-right sx"></i> Clear/Play</a></li>
-			<li><a href="#notarget" data-cmd="track_info_folder"><i class="fal fa-music sx"></i> Track info</a></li>
-		</ul>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#notarget" data-cmd="add_item"><i class="fal fa-plus sx"></i> Add</a></li>
+            <li><a href="#notarget" data-cmd="play_item"><i class="fal fa-play sx"></i> Play</a></li>
+            <li><a href="#notarget" data-cmd="add_item_next"><i class="fal fa-plus-circle sx"></i> Add next</a></li>
+            <li><a href="#notarget" data-cmd="clear_play_item"><i class="fal fa-chevron-square-right sx"></i> Clear/Play</a></li>
+            <li><a href="#notarget" data-cmd="track_info_folder"><i class="fal fa-music sx"></i> Track info</a></li>
+        </ul>
 	</div>
 
 	<div id="context-menu-savedpl-root" class="context-menu">

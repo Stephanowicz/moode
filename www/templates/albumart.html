@@ -32,19 +32,21 @@
 </div>
 
 <script type="text/javascript">
+var	imgArray;
 curSlideIndex = 0;
 curCoverIndex = 0;
 curCoverViewIndex = 0;
-document.getElementById('slider').src = imgArray[curSlideIndex];
+    document.getElementById('slider').src = imgArray[curSlideIndex][0];
 function nextSlideImage(imgIndex=curSlideIndex) {
-	curSlideIndex=imgIndex;
-	if (curSlideIndex >= imgArray.length) {
+    if (!isNaN(parseInt(imgIndex))) { curSlideIndex = imgIndex; }
+    else { imgIndex = curSlideIndex; }
+    if (curSlideIndex >= imgArray.length) {
 	    curSlideIndex = 0;
 	    imgIndex = 0;
 	}
     document.getElementById('slider').className += "fadeOut";
     setTimeout(function() {
-        document.getElementById('slider').src = imgArray[imgIndex];
+        document.getElementById('slider').src = imgArray[imgIndex][0];
         document.getElementById('slider').className = "";
 		resetActiveSlideDots();
 		document.getElementsByClassName("dot")[imgIndex].className += " dotactive";
@@ -52,7 +54,8 @@ function nextSlideImage(imgIndex=curSlideIndex) {
     curSlideIndex++;
 }
 function nextCoverImage(imgIndex=curCoverIndex) {
-    curCoverIndex=imgIndex;
+    if (!isNaN(parseInt(imgIndex))) { curCoverIndex = imgIndex; }
+    else { imgIndex = curCoverIndex; }
     if (curCoverIndex >= imgArray.length) {
 	    curCoverIndex = 0;
 	    imgIndex = 0;
@@ -60,7 +63,7 @@ function nextCoverImage(imgIndex=curCoverIndex) {
 	$('#coverart-url').children()[0].classList.add("fadeOut");
 
 	setTimeout(function() {
-		$('#coverart-url').children()[0].src = imgArray[imgIndex];
+        $('#coverart-url').children()[0].src = imgArray[imgIndex][0];
 		$('#coverart-url').children()[0].classList.remove("fadeOut");
 		resetActiveCoverDots();
 //		document.getElementsByClassName("cover_art_dot")[imgIndex].className += " dotactive";
@@ -68,18 +71,19 @@ function nextCoverImage(imgIndex=curCoverIndex) {
     curCoverIndex++;
 }
 function nextCoverViewImage(imgIndex=curCoverViewIndex) {
-	curCoverViewIndex=imgIndex;
-	if (curCoverViewIndex >= imgArray.length) {
+    if (!isNaN(parseInt(imgIndex))) { curCoverViewIndex = imgIndex; }
+    else { imgIndex = curCoverViewIndex; }
+    if (curCoverViewIndex >= imgArray.length) {
 		curCoverViewIndex = 0;
 		imgIndex = 0;
 	}
 	$('#ss-coverart-url').children()[0].classList.add("fadeOut");
 
 	setTimeout(function() {
-		$('#ss-coverart-url').children()[0].src = imgArray[imgIndex];
+        $('#ss-coverart-url').children()[0].src = imgArray[imgIndex][0];
 		$('#ss-coverart-url').children()[0].classList.remove("fadeOut");
-		resetActiveCoverViewDots();
-		document.getElementsByClassName("coverview_art_dot")[imgIndex].className += " dotactive";
+	//	resetActiveCoverViewDots();
+	//	document.getElementsByClassName("coverview_art_dot")[imgIndex].className += " dotactive";
     },250);
     curCoverViewIndex++;
 }

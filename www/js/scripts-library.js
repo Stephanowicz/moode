@@ -1459,7 +1459,7 @@ $('#context-menu-lib-item a').click(function(e) {
     if ($(this).data('cmd') == 'one_touch_action') {
         oneTouchItem(filteredSongs[UI.dbEntry[0]].file);
 	}
-	else if ($(this).data('cmd') == 'add_item' || $(this).data('cmd') == 'add_item_next') {
+	else if ($(this).data('cmd') == 'add_item' || $(this).data('cmd') == 'add_item_next' || $(this).data('cmd') == 'add_folders_next') {
 		mpdDbCmd($(this).data('cmd'), filteredSongs[UI.dbEntry[0]].file);
 		notify('add_item');
 	}

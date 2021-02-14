@@ -34,7 +34,7 @@ session_write_close();
 
 $jobs = array('reboot', 'poweroff', 'updclockradio', 'update_library');
 $playqueue_cmds = array('add_item', 'play_item', 'add_item_next', 'play_item_next', 'clear_add_item', 'clear_play_item',
-	'add_group', 'play_group', 'add_group_next', 'play_group_next', 'clear_add_group', 'clear_play_group');
+	'add_group', 'play_group', 'add_group_next', 'play_group_next', 'clear_add_group', 'clear_play_group', 'add_folders_next');
 $other_mpd_cmds = array('updvolume' ,'getmpdstatus', 'playlist', 'delplitem', 'moveplitem', 'getplitemfile', 'savepl', 'listsavedpl',
 	'delsavedpl', 'setfav', 'addfav', 'lsinfo', 'search', 'newstation', 'updstation', 'delstation', 'loadlib', 'station_info', 'track_info');
 $turn_consume_off = false;
@@ -163,6 +163,20 @@ elseif (in_array($_GET['cmd'], $playqueue_cmds) || in_array($_GET['cmd'], $other
 				array_push($cmds, 'move ' . $status['playlistlength'] . ':' . ($status['playlistlength'] + count($_POST['path'])) . ' ' . ($status['song'] + 1));
 			}
 			chainMpdCmds($sock, $cmds);
+			break;
+		case 'add_folders_next':
+			$status = parseStatus(getMpdStatus($sock));
+			$plLengthOld=$status['playlistlength'];
+			workerLog('moode.php: $plLengthOld: ' . $plLengthOld);
+			sendMpdCmd($sock, 'add "' . html_entity_decode($_POST['path']) . '"');
+			$resp = readMpdResp($sock);
+			workerLog('moode.php: $resp: ' . print_r($resp));
+			$status = parseStatus(getMpdStatus($sock));
+			$plLengthNew=$status['playlistlength'];
+			workerLog('moode.php: $plLengthNew: ' . $plLengthNew);
+			$cmds = 'move ' . $plLengthOld . ':' . $plLengthNew . ' ' . ($status['song'] + 1);
+			workerLog('moode.php: $cmds: ' . $cmds);
+			sendMpdCmd($sock, $cmds);
 			break;
         case 'play_group':
 		case 'play_group_next':
