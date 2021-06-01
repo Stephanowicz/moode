@@ -16,3 +16,12 @@ __MACOSX
 /node_modules
 /www/index.html
 /logs
+.vs/config/applicationhost.config
+.vs/moode/config/applicationhost.config
+.vs/moode/v15/.suo
+.vs/moode/v15/Browse.VC.db
+.vs/moode/v16/.suo
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/tasks.vs.json
+.vs/VSWorkspaceState.json
